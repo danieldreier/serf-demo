@@ -27,8 +27,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define :centos64 do |node|
       node.vm.box = 'centos-64-x64-vbox4210-nocm'
       node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box'
+      node.vm.hostname = 'centos-64.boxnet'
 
-      node.vm.hostname = 'webserver-1.boxnet'
       node.vm.network :private_network, ip: "192.168.35.21"
       node.vm.provision "shell", path: "provision/install_puppet.sh"
       node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
@@ -37,9 +37,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define :ubuntu1204 do |node|
       node.vm.box = 'ubuntu-server-12042-x64-vbox4210-nocm'
       node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210-nocm.box'
+      node.vm.hostname = 'ubuntu-1204.boxnet'
+      node.vm.network :private_network, ip: "192.168.35.22"
 
-      # hack to avoid ubuntu-specific 'stdin: is not a tty' error on startup
+      # hack to avoid ubuntu/debian-specific 'stdin: is not a tty' error on startup
       node.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
       node.vm.provision "shell", path: "provision/install_puppet.sh"
       node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
     end
@@ -47,12 +50,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define :debian7 do |node|
       node.vm.box = 'debian-70rc1-x64-vbox4210-nocm'
       node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/debian-70rc1-x64-vbox4210-nocm.box'
-      # hack to avoid ubuntu-specific 'stdin: is not a tty' error on startup
+      node.vm.hostname = 'debian7.boxnet'
+      node.vm.network :private_network, ip: "192.168.35.23"
+
+      # hack to avoid ubuntu/debian-specific 'stdin: is not a tty' error on startup
       node.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
       node.vm.provision "shell", path: "provision/install_puppet.sh"
       node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
     end
-
 
 end
 

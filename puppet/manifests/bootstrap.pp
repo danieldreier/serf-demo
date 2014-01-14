@@ -1,20 +1,7 @@
+# Bootstrap librarian puppet
+
 node default {
-
-case $operatingsystem {
-    'RedHat', 'CentOS': {
-      exec { 'yum update on first boot':
-        command => '/usr/bin/yum --exclude=kernel* update -y',
-        creates => '/var/first-boot-update-ran',
-      }
-      file {'/var/first-boot-update-ran':
-        content => 'yum update ran on first boot',
-        require => Exec['yum update on first boot'],
-      }
-    }
-    default: {
-    }
-  }
-
+  # Install librarian-puppet
   package { 'rubygems': ensure => 'installed' }
   package { 'librarian-puppet':
     ensure   => 'installed',
@@ -22,25 +9,21 @@ case $operatingsystem {
     require  => Package['rubygems'],
   }
 
-  # Run librarian-puppet if Puppetfile changed
+  # Hack because librarian-puppet fails in a virtualbox shared file system
   file { '/etc/puppet/Puppetfile':
     mode   => '0644',
-    owner  => root,
-    group  => root,
-    source => '/vagrant/Puppetfile';
+    source => '/opt/puppet/Puppetfile',
   }
 
+  # Run librarian-puppet only if Puppetfile changed
   exec { 'run librarian-puppet':
     environment => ['HOME=/root'],
-    command     => '/usr/bin/librarian-puppet install',
+    command     => 'librarian-puppet install',
     cwd         => '/etc/puppet',
     refreshonly => true,
     subscribe   => File['/etc/puppet/Puppetfile'],
-    path        => '/usr/bin:/usr/sbin:/bin',
+    path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
     require     => [ File['/etc/puppet/Puppetfile'],
                     Package['librarian-puppet'], ],
   }
-
-
-
 }

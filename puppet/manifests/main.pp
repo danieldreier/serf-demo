@@ -11,5 +11,4 @@ file{"/usr/local/bin/runlibrarian":
   mode    => 0755
 }
 
-import 'basic.pp'
 import 'nodes.pp'

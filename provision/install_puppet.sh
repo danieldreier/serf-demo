@@ -153,6 +153,7 @@ ensure_puppet() {
         rm $repo_path
         is_installed puppetlabs-release && echo "Puppetlabs yum repo installed sucessfully" || echo "Error: puppetlabs repo install failed"
       fi
+      ensure_package_present 'ruby-devel' #needed for librarian-puppet and many others
       # Install puppet itself
 
       if [ -n "$puppet_version" ]; then

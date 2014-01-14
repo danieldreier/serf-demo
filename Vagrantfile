@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
     end
 
-    config.vm.define :ubuntu1204 do |node|
+    config.vm.define :ubuntu1204_latest do |node|
       node.vm.box = 'ubuntu-server-12042-x64-vbox4210-nocm'
       node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210-nocm.box'
       node.vm.hostname = 'ubuntu-1204.boxnet'
@@ -96,6 +96,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       node.vm.provision "shell", path: "provision/install_puppet.sh", args: "2.7.25"
       node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
     end
+
+    config.vm.define :arch_latest do |node|
+      node.vm.box = 'arch64'
+      node.vm.box_url = 'http://iweb.dl.sourceforge.net/project/flowboard-vagrant-boxes/arch64-2013-07-26-minimal.box'
+      node.vm.provision "shell", path: "provision/install_puppet.sh"
+
+      # Librarian-puppet does not auto-install correctly on arch
+      #node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
+    end
+
 
 end
 

@@ -24,12 +24,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     ### VM-Specific Options ###
 
-    config.vm.define :centos64 do |node|
+    config.vm.define :centos64_2725 do |node|
       node.vm.box = 'centos-64-x64-vbox4210-nocm'
       node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box'
-      node.vm.hostname = 'centos-64.boxnet'
+      node.vm.hostname = 'centos-64-2725.boxnet'
 
       node.vm.network :private_network, ip: "192.168.35.21"
+      node.vm.provision "shell", path: "provision/install_puppet.sh", args: "2.7.25"
+      node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
+    end
+
+    config.vm.define :centos64_latest do |node|
+      node.vm.box = 'centos-64-x64-vbox4210-nocm'
+      node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box'
+      node.vm.hostname = 'centos-64-latest.boxnet'
+
+      node.vm.network :private_network, ip: "192.168.35.24"
       node.vm.provision "shell", path: "provision/install_puppet.sh"
       node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
     end
@@ -47,7 +57,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
     end
 
-    config.vm.define :debian7 do |node|
+    config.vm.define :ubuntu1204_2725 do |node|
+      node.vm.box = 'ubuntu-server-12042-x64-vbox4210-nocm'
+      node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210-nocm.box'
+      node.vm.hostname = 'ubuntu-1204-2725.boxnet'
+      node.vm.network :private_network, ip: "192.168.35.28"
+
+      # hack to avoid ubuntu/debian-specific 'stdin: is not a tty' error on startup
+      node.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
+      node.vm.provision "shell", path: "provision/install_puppet.sh", args: "2.7.25"
+      node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
+    end
+
+
+    config.vm.define :debian7_latest do |node|
       node.vm.box = 'debian-70rc1-x64-vbox4210-nocm'
       node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/debian-70rc1-x64-vbox4210-nocm.box'
       node.vm.hostname = 'debian7.boxnet'
@@ -57,6 +81,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       node.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 
       node.vm.provision "shell", path: "provision/install_puppet.sh"
+      node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
+    end
+
+    config.vm.define :debian7_2725 do |node|
+      node.vm.box = 'debian-70rc1-x64-vbox4210-nocm'
+      node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/debian-70rc1-x64-vbox4210-nocm.box'
+      node.vm.hostname = 'debian7.boxnet'
+      node.vm.network :private_network, ip: "192.168.35.26"
+
+      # hack to avoid ubuntu/debian-specific 'stdin: is not a tty' error on startup
+      node.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
+      node.vm.provision "shell", path: "provision/install_puppet.sh", args: "2.7.25"
       node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
     end
 

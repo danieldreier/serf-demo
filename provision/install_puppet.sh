@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if [ -n "$1" ]; then
+  puppet_version="$1"
+fi
+
 require_root_access() {
   if [[ $EUID -ne 0 ]]; then
      echo "ERROR: This script requires root access"
@@ -150,7 +154,13 @@ ensure_puppet() {
         is_installed puppetlabs-release && echo "Puppetlabs yum repo installed sucessfully" || echo "Error: puppetlabs repo install failed"
       fi
       # Install puppet itself
-      ensure_package_present 'puppet'
+
+      if [ -n "$puppet_version" ]; then
+        puppet_package_name="puppet-${puppet_version}"
+      else
+        puppet_package_name="puppet"
+      fi
+      ensure_package_present "$puppet_package_name"
       ;;
 
     debian)
@@ -173,7 +183,16 @@ ensure_puppet() {
 
       # Install puppet
       ensure_package_present 'ruby-dev' #needed for librarian-puppet and many others
-      ensure_package_present 'puppet'
+
+      if [ -n "$puppet_version" ]; then
+        puppet_package_name="puppet=${puppet_version}-1puppetlabs1"
+        puppet_common_package_name="puppet-common=${puppet_version}-1puppetlabs1"
+      else
+        puppet_package_name="puppet"
+        puppet_common_package_name="puppet-common"
+      fi
+      apt-get -qq update
+      apt-get -qq install -y ${puppet_package_name} ${puppet_common_package_name} > /dev/null
       ;;
 
     arch)

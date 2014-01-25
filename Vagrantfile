@@ -44,6 +44,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
     end
 
+    config.vm.define :fedora18_latest do |node|
+      node.vm.box = 'fedora-18-x64-vbox4210-nocm'
+      node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/fedora-18-x64-vbox4210-nocm.box'
+      node.vm.hostname = 'fedora-18-latest.boxnet'
+
+      node.vm.provision "shell", path: "provision/install_puppet.sh"
+      node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
+    end
+    config.vm.define :fedora18_2725 do |node|
+      node.vm.box = 'fedora-18-x64-vbox4210-nocm'
+      node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/fedora-18-x64-vbox4210-nocm.box'
+      node.vm.hostname = 'fedora-18-2725.boxnet'
+
+      node.vm.provision "shell", path: "provision/install_puppet.sh", args: "2.7.25"
+      node.vm.provision "shell", path: "provision/bootstrap_puppet.sh"
+    end
+
     config.vm.define :ubuntu1204_latest do |node|
       node.vm.box = 'ubuntu-server-12042-x64-vbox4210-nocm'
       node.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210-nocm.box'

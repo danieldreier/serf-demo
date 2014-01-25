@@ -133,6 +133,10 @@ ensure_puppet() {
     redhat)
       echo "$OS_DESCRIPTION"
       REPO_URL="https://yum.puppetlabs.com/el/${MAJOR_REV}/products/${MACH}/puppetlabs-release-${MAJOR_REV}-7.noarch.rpm"
+      if lowercase DIST == 'fedora' ; then
+        REPO_URL="https://yum.puppetlabs.com/fedora/f${MAJOR_REV}/products/${MACH}/puppetlabs-release-${MAJOR_REV}-7.noarch.rpm"
+        ensure_package_present 'gnupg'
+      fi
       # Install GPG key
       if ! rpm -qi gpg-pubkey-4bd6ec30-4ff1e4fa > /dev/null 2>&1 ; then 
         gpg_key=$(mktemp)

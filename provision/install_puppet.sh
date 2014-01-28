@@ -133,18 +133,18 @@ ensure_puppet() {
     redhat)
       echo "$OS_DESCRIPTION"
 
-      REPO_URL="https://yum.puppetlabs.com/el/${MAJOR_REV}/products/${MACH}/puppetlabs-release-${MAJOR_REV}-7.noarch.rpm"
-
+      REPO_BASE_URL="https://yum.puppetlabs.com/el/${MAJOR_REV}/products/${MACH}/puppetlabs-release-${MAJOR_REV}-7.noarch.rpm"
       if [ "$(lowercase $DIST)" == 'fedora' ]; then
         REPO_BASE_URL="https://yum.puppetlabs.com/fedora/f${MAJOR_REV}/products/${MACH}"
-        REPO_DATA_URL="${REPO_BASE_URL}/repodata/filelists.xml.gz"
-        wget $REPO_DATA_URL
-        gunzip filelists.xml.gz
-        REL=$(grep puppetlabs-release filelists.xml | grep --only-matching 'rel=\"[0-9]*\"' | sort | tail -n 1)
-        rm filelists.xml
-        REPO_URL="https://yum.puppetlabs.com/fedora/f${MAJOR_REV}/products/${MACH}/puppetlabs-release-${MAJOR_REV}-${REL}.noarch.rpm"
         ensure_package_present 'gnupg'
       fi
+
+      # Figure out what the most recent puppetlabs-release rpm is
+      TEMPLIST=$(mktemp)
+      wget --convert-links --output-document="$TEMPLIST" "$REPO_BASE_URL"
+      REPO_URL=$(wget --spider --force-html -i "$TEMPLIST" 2>&1 | grep --only-matching 'https://yum.puppetlabs.com/.*/puppetlabs-release-[0-9]*-[0-9]*.noarch.rpm' | sort | head -n 1)
+      rm "$TEMPLIST"
+
       # Install GPG key
       if ! rpm -qi gpg-pubkey-4bd6ec30-4ff1e4fa > /dev/null 2>&1 ; then 
         gpg_key=$(mktemp)

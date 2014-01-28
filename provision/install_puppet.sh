@@ -132,10 +132,17 @@ ensure_puppet() {
   case $DistroBasedOn in
     redhat)
       echo "$OS_DESCRIPTION"
+
       REPO_URL="https://yum.puppetlabs.com/el/${MAJOR_REV}/products/${MACH}/puppetlabs-release-${MAJOR_REV}-7.noarch.rpm"
 
       if [ "$(lowercase $DIST)" == 'fedora' ]; then
-        REPO_URL="https://yum.puppetlabs.com/fedora/f${MAJOR_REV}/products/${MACH}/puppetlabs-release-${MAJOR_REV}-7.noarch.rpm"
+        REPO_BASE_URL="https://yum.puppetlabs.com/fedora/f${MAJOR_REV}/products/${MACH}"
+        REPO_DATA_URL="${REPO_BASE_URL}/repodata/filelists.xml.gz"
+        wget $REPO_DATA_URL
+        gunzip filelists.xml.gz
+        REL=$(grep puppetlabs-release filelists.xml | grep --only-matching 'rel=\"[0-9]*\"' | sort | tail -n 1)
+        rm filelists.xml
+        REPO_URL="https://yum.puppetlabs.com/fedora/f${MAJOR_REV}/products/${MACH}/puppetlabs-release-${MAJOR_REV}-${REL}.noarch.rpm"
         ensure_package_present 'gnupg'
       fi
       # Install GPG key

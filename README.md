@@ -8,8 +8,8 @@ How to use
 ----------
 
 1. Install [Vagrant](http://vagrantup.com) and [VirtualBox](http://virtualbox.org)
-2. Clone this repository
-3. Run `vagrant up node0` and wait for the first node to start
+2. Clone this repository: `git clone https://github.com/danieldreier/serf-demo.git`
+3. `cd serf-demo` then run `vagrant up node0` and wait for the first node to start
 4. `vagrant ssh -c 'watch -n 1 serf members' node0`
 5. in another terminal window, run `vagrant up` and watch members join the cluster
 

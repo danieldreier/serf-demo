@@ -22,6 +22,7 @@ How it works
 ------------
 
 The Vagrantfile uses puppet and the puppet-serf module to install serf, create a service for it, and configure it to try and connect to the ip address of the first node. In reality we could connect to any of the nodes, but this simplifies setup.
+
 Each node only uses 128mb memory. By default, 5 instances are brought up. You can modify the number of nodes created by editing `INSTANCES=5` in the Vagrantfile to some other value, then running `vagrant up` again to bring up the new nodes.
 
 ###Caveats:

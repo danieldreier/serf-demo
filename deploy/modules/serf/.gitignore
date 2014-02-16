@@ -1,0 +1,9 @@
+/.vagrant/
+
+/.project
+
+/.watchr
+
+/Gemfile.lock
+
+.DS_Store

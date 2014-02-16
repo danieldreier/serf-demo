@@ -4,22 +4,19 @@
 # Shamelessly copied from https://github.com/ripienaar/mcollective-vagrant/blob/master/Vagrantfile
 # Inspired by discussion at https://github.com/hashicorp/serf/issues/127
 
-
 # create this many nodes
-INSTANCES=3
+INSTANCES=5
 
-# the nodes will be called middleware.example.net
-# and node0.example.net, you can change this here
+# Nodes will be called node1.example.net, node2.example.net, etc.
 DOMAIN="example.net"
 
-# these nodes do not need a lot of RAM, 384 is
-# is enough but you can tweak that here
-MEMORY=256
+# these nodes do not need a lot of RAM - 128 is barely enough
+# increase it if you want to run anything else on these boxes
+MEMORY=128
 
 # the instances is a hostonly network, this will
 # be the prefix to the subnet they use
 SUBNET="192.168.2"
-
 
 Vagrant.configure("2") do |config|
 #  config.vm.provision "shell", path: "provision/install.sh"

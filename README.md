@@ -1,5 +1,5 @@
 Vagrant-based Serf Demo
-================
+=======================
 
 This is intended as the fastest way to get hands-on experience with [serf](http://www.serfdom.io/). This
 is a wholesale copy of R.I. Pienaar's excellent [mcollective-vagrant](https://github.com/ripienaar/mcollective-vagrant) repo, which demonstrates mcollective.

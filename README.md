@@ -1,8 +1,14 @@
+# This project has moved
+Note that this has mostly been merged into the [puppet-serf](https://github.com/davidcollom/puppet-serf) module as the Vagrantfile. Future development is likely to take place there and may or may not be sync'd back here.
+
+
+
 Vagrant-based Serf Demo
 =======================
 
 This is intended as the fastest way to get hands-on experience with [serf](http://www.serfdom.io/). This
 is a wholesale copy of R.I. Pienaar's excellent [mcollective-vagrant](https://github.com/ripienaar/mcollective-vagrant) repo, which demonstrates mcollective.
+
 
 How to use
 ----------
